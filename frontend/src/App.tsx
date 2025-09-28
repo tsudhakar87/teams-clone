@@ -1,29 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import Chat from "./components/chat";
+import Auth from "./components/Auth";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState('');
 
-  return (
-    <>
-      <div>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  useEffect(() => {
+    // check if user already logged in
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    if (token && username) {
+      setIsAuthenticated(true);
+      setCurrentUser(username);
+    }
+  }, []);
+
+  const handleAuth = (token: string, username: string) => {
+    setIsAuthenticated(true);
+    setCurrentUser(username);
+  };
+
+  if (!isAuthenticated) {
+    return <Auth onAuth={handleAuth} />;
+  }
+
+  return <Chat currentUser={currentUser} />;
 }
 
-export default App
+export default App;
