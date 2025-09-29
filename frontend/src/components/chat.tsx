@@ -17,7 +17,7 @@ const Chat: React.FC<ChatProps> = ({ currentUser }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
-  const roomId = 'general';
+  const roomId = 'lounge';
 
   useEffect(() => {
     const newSocket = io('http://localhost:5001');
@@ -51,7 +51,11 @@ const Chat: React.FC<ChatProps> = ({ currentUser }) => {
 
   return (
     <div className="App">
-      <h1>Teams Clone - Welcome {currentUser}</h1>
+      <div>
+          <h1>Welcome, {currentUser}!</h1>
+          <p>Live Chat</p>
+      </div>
+      
       <div className="chat-container">
         <div className="messages">
           {messages.map(msg => (
